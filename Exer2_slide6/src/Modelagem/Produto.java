@@ -5,6 +5,8 @@
  */
 package Modelagem;
 
+import Controle.Conexao;
+import java.sql.ResultSet;
 import javax.swing.JOptionPane;
 
 /**
@@ -16,6 +18,8 @@ public class Produto {
     private String descricao;
     private String nomeProduto;
 
+    Conexao con = new Conexao();
+    
     public Produto() {
         this(0,"","");
     }
@@ -50,15 +54,18 @@ public class Produto {
         this.nomeProduto = nomeProduto;
     }
     public void cadastrarProduto(){
-    setCodigo(Integer.parseInt(JOptionPane.showInputDialog("Digite o Codigo do Produto:")));
-    setNomeProduto(JOptionPane.showInputDialog("Digite o Nome do Produto:"));
-    setDescricao(JOptionPane.showInputDialog("Digite a Descrição do Produto:"));
+        String sql = "insert into infoConsultaProduto(codigo,nomeProduto,Descricao) values" + "('" + getCodigo() + "' , '" + getNomeProduto() + "','" + getDescricao() + "')";
+        
+     con.executeSQL(sql);
+        JOptionPane.showMessageDialog(null,"Cadastrado com sucesso");
 
     }
-    public void listarProduto(){
-    JOptionPane.showMessageDialog(null, "ID do Produto:" + getCodigo());
-    JOptionPane.showMessageDialog(null, "Nome do Produto:" + getNomeProduto());
-    JOptionPane.showMessageDialog(null, "Descrição do Produto:" + getDescricao());
+    public ResultSet listarProduto(){
+    ResultSet tabela;
+       tabela = null;
+       String sql = "Select * from infoConsultaProduto";
+       tabela = con.RetornarResultset(sql);
+       return tabela;
     
 }
 

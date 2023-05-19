@@ -5,6 +5,11 @@
  */
 package Modelagem;
 
+import Controle.Conexao;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -16,6 +21,9 @@ public class Usuario {
     private String email;
     private String login;
     private String senha;
+    
+        Conexao conUsu = new Conexao();
+
 
     public Usuario() {
         this("","","","");
@@ -60,20 +68,19 @@ public class Usuario {
         this.senha = senha;
     }
     public void cadastrarUsuario(){
-    setNome(JOptionPane.showInputDialog("Digite o Nome do Usuario:"));
-    setNome(JOptionPane.showInputDialog("Digite o Email do Usuario:"));
-    setNome(JOptionPane.showInputDialog("Digite o Login do Usuario:"));
-    setNome(JOptionPane.showInputDialog("Digite o Senha do Usuario:"));
-
-    }
-    public void listarUsuario(){
-    JOptionPane.showMessageDialog(null, "Nome:" + getNome());
-    JOptionPane.showMessageDialog(null, "Email:" + getEmail());
-    JOptionPane.showMessageDialog(null, "Login:" + getLogin());
-    JOptionPane.showMessageDialog(null, "Senha:" + getSenha());
-
+     String sql = "insert into infousu(nome,email,login,senha) values" + "('" + getNome() + "' , '" + getEmail() + "','" + getLogin() +"','" + getSenha()+"')";
         
-                
-    }
+     conUsu.executeSQL(sql);
+        JOptionPane.showMessageDialog(null,"Cadastrado com sucesso");
+
+    };
+    public ResultSet listarUsuario(){
+       ResultSet tabela;
+       tabela = null;
+       String sql = "Select * from infousu";
+       tabela = conUsu.RetornarResultset(sql);
+       return tabela;
+        
+    };
     
 }

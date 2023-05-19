@@ -5,6 +5,12 @@
  */
 package Visualizacao;
 
+import Modelagem.Produto;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author vinic
@@ -17,7 +23,8 @@ public class FProduto extends javax.swing.JFrame {
     public FProduto() {
         initComponents();
     }
-
+    Produto pro = new Produto();
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -53,6 +60,12 @@ public class FProduto extends javax.swing.JFrame {
 
         jLabel5.setText("Descrição");
 
+        txtNome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNomeActionPerformed(evt);
+            }
+        });
+
         table1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
@@ -67,10 +80,25 @@ public class FProduto extends javax.swing.JFrame {
         jScrollPane1.setViewportView(table1);
 
         btnGravar.setText("Gravar");
+        btnGravar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGravarActionPerformed(evt);
+            }
+        });
 
         btnLimpar.setText("Limpar");
+        btnLimpar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimparActionPerformed(evt);
+            }
+        });
 
         btnSair.setText("Sair");
+        btnSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSairActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -137,6 +165,49 @@ public class FProduto extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnGravarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGravarActionPerformed
+        // TODO add your handling code here:
+        pro.setCodigo(Integer.parseInt(txtCod.getText()));
+        pro.setNomeProduto(txtNome.getText());
+        pro.setDescricao(txtDesc.getText());
+        pro.cadastrarProduto();
+        
+        
+        ResultSet tabela;
+        tabela=null;
+        
+        tabela = pro.listarProduto();
+        DefaultTableModel modelo = (DefaultTableModel)table1.getModel();
+        modelo.setNumRows(0);
+        
+        try{
+            do{
+               modelo.addRow(new String[] {tabela.getString(1),tabela.getString(2), tabela.getString(3), tabela.getString(4)} );
+            }while(tabela.next());
+        }catch( SQLException erro ){
+            JOptionPane.showMessageDialog(null,"Erro ao preencher tabela" + erro );
+        };
+        
+    }//GEN-LAST:event_btnGravarActionPerformed
+
+    private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
+        // TODO add your handling code here:
+        txtCod.setText("");
+        txtNome.setText("");
+        txtDesc.setText("");
+        
+    }//GEN-LAST:event_btnLimparActionPerformed
+
+    private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
+        // TODO add your handling code here:
+        System.exit(0);
+
+    }//GEN-LAST:event_btnSairActionPerformed
+
+    private void txtNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNomeActionPerformed
 
     /**
      * @param args the command line arguments
